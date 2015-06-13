@@ -1,0 +1,8 @@
+name = Subscribe To Climate Events
+description = Form functions to manage form to subscribe to climate events
+package = Custom
+core = 7.x
+php = 5.2
+files[] = includes/helper-functions.inc
+files[] = includes/EnableHTMLEmailsMailSystem.inc
+

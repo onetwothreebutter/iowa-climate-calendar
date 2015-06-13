@@ -1,0 +1,261 @@
+/* line 1, ../sass/includes/_base.sass */
+div, p, span {
+  font-family: Roboto, Helvetica, "Helvetica Neue", Arial, sans-serif; }
+
+/* line 1, ../sass/includes/_front.sass */
+#navigation {
+  display: none; }
+
+/* line 4, ../sass/includes/_front.sass */
+.site-header__heading {
+  margin: 0.3em 0 0.4em 0;
+  font-family: Roboto, Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-size: 9vw;
+  text-align: center; }
+
+/* line 11, ../sass/includes/_front.sass */
+.subscribe-form.-form-show {
+  display: block; }
+/* line 13, ../sass/includes/_front.sass */
+.subscribe-form.-form-hidden {
+  display: none; }
+
+/* line 5, ../sass/includes/_climate_event.sass */
+.climate-events__filter-name {
+  margin-bottom: 0.2em; }
+
+/* line 7, ../sass/includes/_climate_event.sass */
+.climate-events__filter {
+  display: inline-block;
+  vertical-align: top;
+  width: 20em;
+  margin: 0.2em 1.7em 2em 1em;
+  text-align: left; }
+
+/* line 13, ../sass/includes/_climate_event.sass */
+.climate-events__filter-event-type {
+  margin-bottom: 1.5em; }
+
+/* line 15, ../sass/includes/_climate_event.sass */
+.climate-events__filter-name {
+  font-size: 1em; }
+
+/* line 18, ../sass/includes/_climate_event.sass */
+.climate-events__filter-item {
+  display: block;
+  margin-bottom: 0.2em; }
+/* line 21, ../sass/includes/_climate_event.sass */
+.climate-events__filter-item label {
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: normal;
+  font-size: 0.9em; }
+/* line 26, ../sass/includes/_climate_event.sass */
+.climate-events__filter-item input {
+  display: inline-block;
+  vertical-align: bottom; }
+
+/* line 29, ../sass/includes/_climate_event.sass */
+.climate-events__filter-distance {
+  margin-bottom: 1.9em; }
+
+/* line 31, ../sass/includes/_climate_event.sass */
+.climate-events__list-heading {
+  margin-top: 0; }
+
+/* line 33, ../sass/includes/_climate_event.sass */
+.climate-events__list {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 60em;
+  text-align: left; }
+@media (max-width: 1350px) {
+  /* line 33, ../sass/includes/_climate_event.sass */
+  .climate-events__list {
+    max-width: 40em; } }
+
+/* line 40, ../sass/includes/_climate_event.sass */
+.climate-events__list-item {
+  margin-bottom: 1em; }
+
+/* line 42, ../sass/includes/_climate_event.sass */
+.climate-events__event {
+  width: 80%;
+  margin-bottom: 0.5em;
+  font-weight: normal; }
+
+/* line 46, ../sass/includes/_climate_event.sass */
+.climate-events__event-time {
+  display: inline-block;
+  vertical-align: top;
+  width: 6em; }
+
+/* line 50, ../sass/includes/_climate_event.sass */
+.climate-events__event-title {
+  display: inline-block;
+  max-width: 27em;
+  margin-right: 1em; }
+
+/* line 54, ../sass/includes/_climate_event.sass */
+.climate-events__event-title-only {
+  vertical-align: middle;
+  margin-right: 0.2em; }
+
+/* line 57, ../sass/includes/_climate_event.sass */
+.climate-events__event-city {
+  vertical-align: middle;
+  font-size: 0.8em;
+  opacity: 0.7; }
+
+/* line 61, ../sass/includes/_climate_event.sass */
+.climate-events__event-types {
+  display: inline-block;
+  vertical-align: top; }
+
+/* line 64, ../sass/includes/_climate_event.sass */
+.climate-event__event-type {
+  border-radius: 0.3em;
+  padding: 0.2em 0.6em;
+  margin-right: 0.5em;
+  font-size: 0.7em;
+  background-color: #dddddd;
+  white-space: nowrap; }
+/* line 71, ../sass/includes/_climate_event.sass */
+.climate-event__event-type:hover {
+  cursor: pointer; }
+
+/* line 73, ../sass/includes/_climate_event.sass */
+.climate-events__event-details {
+  width: 80%;
+  height: 100%;
+  max-height: 1000px;
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  overflow: hidden;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  transition: 0.3s; }
+/* line 83, ../sass/includes/_climate_event.sass */
+.climate-events__event-details.-hidden {
+  max-height: 0; }
+
+/* line 85, ../sass/includes/_climate_event.sass */
+.climate-event__admin-edit {
+  color: rgba(255, 0, 0, 0.74);
+  text-decoration: underline;
+  font-size: 0.9em; }
+/* line 89, ../sass/includes/_climate_event.sass */
+.climate-event__admin-edit:hover {
+  text-decoration: none; }
+
+/* line 91, ../sass/includes/_climate_event.sass */
+.climate-events__event-details-padding {
+  padding: 0.5em 1em; }
+
+/* line 93, ../sass/includes/_climate_event.sass */
+.climate-events__event-venue {
+  margin-bottom: 0;
+  color: #626161; }
+
+/* line 96, ../sass/includes/_climate_event.sass */
+.climate-events__event-address {
+  margin-top: 0;
+  color: #626161; }
+
+/* line 99, ../sass/includes/_climate_event.sass */
+.trigger-show-description {
+  cursor: pointer; }
+
+/* line 101, ../sass/includes/_climate_event.sass */
+#subscribe-to-climate-events-form {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30em;
+  text-align: left; }
+
+/* line 106, ../sass/includes/_climate_event.sass */
+.climate-event__day-name {
+  margin-bottom: 0.5em;
+  font-weight: bold; }
+
+/* line 109, ../sass/includes/_climate_event.sass */
+.climate-events__subscribe-button {
+  display: inline-block;
+  padding: 10px 15px;
+  margin-bottom: 0.3em;
+  color: black;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 2px solid #5f5e5e; }
+/* line 117, ../sass/includes/_climate_event.sass */
+.climate-events__subscribe-button:hover {
+  background: #4f4f4f;
+  color: white;
+  font-weight: normal;
+  cursor: pointer; }
+
+/* line 122, ../sass/includes/_climate_event.sass */
+.climate-events__subscribe-description {
+  margin: 0 0 1.3em 0;
+  font-size: 0.9em; }
+
+/* line 125, ../sass/includes/_climate_event.sass */
+.ng-modal-close {
+  display: none; }
+
+/* line 128, ../sass/includes/_climate_event.sass */
+.climate-events__contact-email {
+  margin-bottom: 0.2em;
+  display: inline-block; }
+
+/* line 131, ../sass/includes/_climate_event.sass */
+.climate-events__contact-description {
+  margin: 0 0 0.3em 0;
+  font-size: 0.9em; }
+
+/* line 1, ../sass/includes/_modal.sass */
+.ng-modal-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  background: rgba(33, 33, 33, 0.9); }
+
+/* line 9, ../sass/includes/_modal.sass */
+.ng-modal-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 2em;
+  background: white;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: center;
+  z-index: 10000; }
+
+/* line 18, ../sass/includes/_modal.sass */
+.ng-modal-close {
+  position: absolute;
+  right: 1.4em;
+  top: 1em;
+  cursor: pointer; }
+
+/* line 23, ../sass/includes/_modal.sass */
+.ng-modal__intro {
+  text-align: left; }
+
+/* line 25, ../sass/includes/_modal.sass */
+.ng-modal__heading {
+  display: inline-block;
+  max-width: 21em;
+  font-size: 1.2em;
+  white-space: normal; }
+
+/* line 2, ../sass/pages/_edit_account.sass */
+.page-user #page {
+  max-width: 960px;
+  margin: 0 auto; }
+/* line 5, ../sass/pages/_edit_account.sass */
+.page-user .field-name-field-email-verification-string {
+  display: none; }

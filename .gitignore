@@ -1,0 +1,23 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+
+#ignore server specific setup files
+robots.txt
+.htaccess
+
+
+# Ignore PHPStorm project files
+.idea
+.idea/*
+*.DS_Store
+sites/all/themes/climate-action-iowa/compass/.sass-cache/*
+.sass-cache
+.sass-cache/*
+*.orig
+
+
+

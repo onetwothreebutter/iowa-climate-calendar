@@ -1,0 +1,133 @@
+@import "breakpoint"
+
+$shrink-width-of-events: max-width 1350px
+
+%sidebar-heading
+  margin-bottom: .2em
+.climate-events__filter
+  display: inline-block
+  vertical-align: top
+  width: 20em
+  margin: .2em 1.7em 2em 1em
+  text-align: left
+.climate-events__filter-event-type
+  margin-bottom: 1.5em
+.climate-events__filter-name
+  @extend %sidebar-heading
+  font-size: 1em
+.climate-events__filter-item
+  display: block
+  margin-bottom: .2em
+  label
+    display: inline-block
+    vertical-align: middle
+    font-weight: normal
+    font-size: .9em
+  input
+    display: inline-block
+    vertical-align: bottom
+.climate-events__filter-distance
+  margin-bottom: 1.9em
+.climate-events__list-heading
+  margin-top: 0
+.climate-events__list
+  display: inline-block
+  vertical-align: top
+  max-width: 60em
+  text-align: left
+  +breakpoint($shrink-width-of-events)
+    max-width: 40em
+.climate-events__list-item
+  margin-bottom: 1em
+.climate-events__event
+  width: 80%
+  margin-bottom: .5em
+  font-weight: normal
+.climate-events__event-time
+  display: inline-block
+  vertical-align: top
+  width: 6em
+.climate-events__event-title
+  display: inline-block
+  max-width: 27em
+  margin-right: 1em
+.climate-events__event-title-only
+  vertical-align: middle
+  margin-right: .2em
+.climate-events__event-city
+  vertical-align: middle
+  font-size: .8em
+  opacity: .7
+.climate-events__event-types
+  display: inline-block
+  vertical-align: top
+.climate-event__event-type
+  border-radius: 0.3em
+  padding: 0.2em 0.6em
+  margin-right: .5em
+  font-size: .7em
+  background-color: #dddddd
+  white-space: nowrap
+  &:hover
+    cursor: pointer
+.climate-events__event-details
+  width: 80%
+  height: 100%
+  max-height: 1000px
+  margin-top: .5em
+  font-size: .9em
+  overflow: hidden
+  border-radius: 0.5em
+  background: rgb(232, 232, 232)
+  transition: .3s
+  &.-hidden
+    max-height: 0
+.climate-event__admin-edit
+  color: rgba(255, 0, 0, 0.74)
+  text-decoration: underline
+  font-size: .9em
+  &:hover
+    text-decoration: none
+.climate-events__event-details-padding
+  padding: .5em 1em
+.climate-events__event-venue
+  margin-bottom: 0
+  color: rgb(98, 97, 97)
+.climate-events__event-address
+  margin-top: 0
+  color: rgb(98, 97, 97)
+.trigger-show-description
+  cursor: pointer
+#subscribe-to-climate-events-form
+  display: inline-block
+  vertical-align: middle
+  width: 30em
+  text-align: left
+.climate-event__day-name
+  margin-bottom: .5em
+  font-weight: bold
+.climate-events__subscribe-button
+  display: inline-block
+  padding: 10px 15px
+  margin-bottom: .3em
+  color: black
+  font-weight: bold
+  border-radius: 4px
+  border: 2px solid rgb(95, 94, 94)
+  &:hover
+    background: #4F4F4F
+    color: white
+    font-weight: normal
+    cursor: pointer
+.climate-events__subscribe-description
+  margin: 0 0 1.3em 0
+  font-size: .9em
+.ng-modal-close
+  display: none
+
+.climate-events__contact-email
+  margin-bottom: .2em
+  display: inline-block
+.climate-events__contact-description
+  margin: 0 0 .3em 0
+  font-size: .9em

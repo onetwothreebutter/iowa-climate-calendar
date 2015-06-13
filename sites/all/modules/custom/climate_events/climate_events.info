@@ -1,0 +1,7 @@
+name = Climate Events
+description = Functions to help the Climate Events like json key formatter
+package = Custom
+core = 7.x
+php = 5.2
+
+

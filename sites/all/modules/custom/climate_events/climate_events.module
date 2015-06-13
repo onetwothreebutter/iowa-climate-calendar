@@ -1,0 +1,109 @@
+<?php
+
+include_once('includes/functions_for/climate_events_menu.php');
+
+function climate_events_menu() {
+
+  $items = array();
+
+  $items['services/climate-events-by-distance-from-zip'] = array( //this creates a URL that will call this form at "examples/form-example"
+    'title' => 'Subscribe', //page title
+    'description' => 'get to climate events by distance from zip',
+    'page callback' => 'get_climate_events_by_distance_from_zip', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array(''), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+
+  return $items;
+}
+
+
+include_once('includes/functions_for/climate_events_services_request_postprocess_alter.php');
+
+function climate_events_services_request_postprocess_alter($controller, $args, &$result) {
+
+  if (isClimateEventsService($args)) {
+    $result = renameClimateEventsKeys($result);
+    $result = addEventTypeNameAlongsideTypeId($result);
+    $result = groupByEventDay($result);
+  } else if (isClimateDistancesService($args)) {
+    $result = renameClimateDistanceKeys($result);
+   // $result = addClimateDistanceAlongsideDistanceName($result);
+  }
+
+}
+
+
+function climate_events_views_pre_build( &$view ) {
+//$custom_field = 'field_MYFIELD_value';
+  //$view->display[$view->current_display]->handler->options["style_options"]["grouping"] = 'field_event_date_time_2';
+}
+
+
+
+
+function climate_events_views_query_alter(&$view, &$query) {
+
+  if (isClimateEventsViewBeingCalledWithArguments($view)) {
+
+    $nids = extractArgumentsFromClimateEventsCall($view);
+
+    if(ifNidsAreAllNumbers($nids)) {
+      addNidsToQuery($nids, $query);
+    }
+
+  }
+
+}
+
+
+
+
+
+/**** supporting functions ****/
+
+function isClimateEventsViewBeingCalledWithArguments($view) {
+  return isClimateEventsView($view) && (isset($_GET['nid']) || count($view->args) > 0 );
+}
+
+function isClimateEventsView($view) {
+  return $view->name == 'climate_events';
+}
+
+
+function extractArgumentsFromClimateEventsCall($view) {
+  $nids = array();
+  if(isset($_GET['nid'])) {
+    $nids = explode('|',$_GET['nid']);
+  } else if (count($view->args) > 0 ) {
+    $nids = $view->args[0];
+  }
+
+  return $nids;
+}
+
+
+function ifNidsAreAllNumbers($nids){
+  return $nids == array_filter($nids, 'is_numeric') && !empty($nids);
+}
+
+
+function addNidsToQuery($nids, $query) {
+  $query->add_where(1, 'node.nid', $nids, 'IN');
+}
+
+
+function climate_events_node_presave($node) {
+  $include_root = 'includes/classes/';
+  include_once($include_root . 'GoogleMapsAPI.php');
+  include_once($include_root . 'DrupalWrappers/Address.php');
+  include_once($include_root . 'ClimateEvent.php');
+
+  if($node->type === 'climate_change_event') {
+    $climate_event = new ClimateEvent($node);
+    $climate_event->calculateLatLong();
+    $node = $climate_event->getDrupalObject();
+  }
+}
+

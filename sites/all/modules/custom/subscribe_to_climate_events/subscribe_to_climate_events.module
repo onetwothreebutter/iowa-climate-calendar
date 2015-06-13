@@ -1,0 +1,477 @@
+<?php
+
+include_once('includes/helper-functions.php');
+include_once('includes/functions_for/subscribe_to_climate_events_menu.php');
+include_once('includes/EnableHTMLEmailsMailSystem.php');
+
+
+function subscribe_to_climate_events_menu() {
+
+  $items = array();
+
+  $items['subscribe'] = array( //this creates a URL that will call this form at "examples/form-example"
+    'title' => 'Subscribe', //page title
+    'description' => 'subscribe to climate events',
+    'page callback' => 'output_subscribe_to_climate_events_form', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array(''), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  $items['verify-email/%'] = array(
+    'title' => 'Subscription verify email', //page title
+    'description' => 'verify email address',
+    'page callback' => 'verify_email_address', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array('subscribe_to_climate_events_form'), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  $items['unsubscribe/%'] = array(
+    'title' => 'Subscription verify email', //page title
+    'description' => 'verify email address',
+    'page callback' => 'unsubscribe', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array('subscribe_to_climate_events_form'), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  $items['change-subscription/%'] = array(
+    'title' => 'Subscription verify email', //page title
+    'description' => 'verify email address',
+    'page callback' => 'change_subscription', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array('subscribe_to_climate_events_form'), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  $items['resend-change-subscription/%'] = array(
+    'title' => 'Resend email to change subscription', //page title
+    'description' => 'resend change subscription',
+    'page callback' => 'resend_change_subscription', //this is the function that will be called when the page is accessed.  for a form, use drupal_get_form
+    'page arguments' => array(''), //put the name of the form here
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+
+function output_subscribe_to_climate_events_form(){
+
+  $subscribe_to_climate_events_form = drupal_get_form('subscribe_to_climate_events_form');
+  print render($subscribe_to_climate_events_form);
+  drupal_exit();
+}
+
+function subscribe_to_climate_events_form($form, &$form_state) {
+
+
+
+  $form['#attributes'] = array(
+                                'autocomplete' => 'on'
+                              );
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#attributes' => array('required'=>''),
+    '#required' => true
+  );
+
+  $form['event_types'] = array(
+    '#title' => t('Event Types'),
+    '#type' => 'checkboxes',
+    '#description' => t('Select the climate events you\'d like to subscribe to.'),
+    '#description_display' => 'before',
+    '#options' => getEventTypes()
+  );
+
+  $form['distance_from_zip'] = array(
+    '#title' => t('Distance from Zip Code'),
+    '#type' => 'select',
+    '#description' => t('Only receive events that are within the following distance of your zip code.'),
+    '#description_display' => 'before',
+    '#attributes' => array('required'=>''),
+    '#required' => true,
+    '#options' => getZipCodeDistances()
+  );
+
+  $form['zip'] = array(
+    '#title' => t('Zip Code'),
+    '#type' => 'textfield',
+    '#maxlength' => '5',
+    '#size' => '8',
+    '#attributes' => array('required'=>''),
+    '#rules' => array(
+      'length[5]',
+      array('rule' => 'numeric', 'error'=>'Zip code must be numeric')),
+    '#required' => true
+  );
+
+  $form['urgent_emails'] = array(
+    '#title' => t('Urgent Alerts'),
+    '#type' => 'checkbox',
+    '#description' => t('Do you want to be immediately notified about urgent events or events that take place before the next email is sent?'),
+    '#options' => 'Yes'
+  );
+
+  $form['submit_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Subscribe')
+  );
+
+  return $form;
+
+}
+
+
+function subscribe_to_climate_events_form_validate($form, &$form_state) {
+  //for some reason the form is validating invalid zip codes
+  if(!is_numeric($form_state['values']['zip']) || strlen($form_state['values']['zip']) > 5) {
+    form_set_error('zip', t('Zip code is invalid'));
+    drupal_goto('<front>');
+  }
+}
+
+
+function subscribe_to_climate_events_form_submit($form, &$form_state) {
+
+
+  $form_state['redirect'] = '<front>';
+
+  drupal_set_message('Check your email to verify your email address and activate your subscription.');
+
+  $email = $form_state['values']['email'];
+
+  if( isEmailAlreadyInUse($email) ) {
+    form_set_error('email', 'Email address is already in use');
+  }
+
+
+  if( formIsValid($form)) {
+    sendVerificationEmail($form_state);
+  } else {
+    drupal_goto('<front>');
+  }
+
+
+}
+
+
+function subscribe_to_climate_events_mail($key, &$message, $params) {
+  switch($key) {
+    case 'verify_email':
+      $langcode = $message['language']->language;
+      $message['subject'] = t('Verify Email Adddress');
+      $message['body'][] = t("Hello!\n\nYou must verify your email addres by clicking on the link below before your subscription will be activated.");
+      $message['body'][] = $params['verification_link'];
+      $message['body'][] = $params['unsubscribe_link'];
+      $message['body'][] = $params['change_subscription_link'];
+      break;
+    case 'weekly_events_email':
+      $langcode = $message['language']->language;
+      $message['subject'] = t('Climate Events for ' . $params['email_send_date']);
+      break;
+    case 'change_subscription':
+      $langcode = $message['language']->language;
+      $message['subject'] = t('Change your Iowa Climate Calendar Subscription');
+      break;
+  }
+}
+
+function subscribe_to_climate_events_cron() {
+
+  if(is_sunday_night() || test_param_is_enabled()) {
+    send_weekly_email();
+  }
+
+  send_urgent_email();
+
+
+
+
+}
+
+function is_sunday_night() {
+  return (date('l') === 'Sunday' &&
+          date('G') >= 21 && date('G') <= 24);
+}
+
+function test_param_is_enabled() {
+  return isset($_GET['send_weekly_email']);
+}
+
+
+function send_weekly_email() {
+
+  if( already_sent_this_weeks_email() && !test_param_is_enabled() ){
+    return;
+  }
+
+  $result = db_query("SELECT pid
+                      FROM {profile}, {users}, {field_data_field_zip_code}
+                      WHERE profile.uid = users.uid and
+                            profile.pid = field_data_field_zip_code.entity_id and
+                            type = :type and
+                            status = :active",
+                        array(':type'=>'subscription', ':active' => 1));
+  $pids = $result->fetchCol();
+
+  $subscriptions = profile2_load_multiple($pids);
+
+  $climate_events = getAllClimateEvents();
+
+  $subscription_objects = [];
+
+  include_once('includes/classes/Subscription.php');
+  include_once(DRUPAL_ROOT . '/sites/all/modules/custom/climate_events/includes/classes/ClimateEvent.php');
+  foreach($subscriptions as $sub) {
+
+    $subscription_obj = new Subscription($sub);
+    $subscription_objects[] = $subscription_obj;
+
+    foreach($climate_events as $event) {
+      $event = new ClimateEvent($event);
+      $subscription_obj->addEventIfItMatchesSubscription($event);
+    }
+  }
+
+
+  //build and send email based on description
+  foreach($subscription_objects as $subscription) {
+    if($subscription->hasMatchingEvents()) {
+      sendWeeklyEventsEmail($subscription);
+    }
+  }
+
+  if(!test_param_is_enabled()) {
+    $send_dates = variable_get('weekly_email_send_dates');
+    $send_dates[] = time();
+    variable_set('weekly_email_send_dates', $send_dates);
+  }
+
+  watchdog(WATCHDOG_INFO,'sent weekly climate subscription email');
+}
+
+function already_sent_this_weeks_email() {
+  $weekly_send_dates = variable_get('weekly_email_send_dates');
+  $last_weekly_send_date_in_ms = $weekly_send_dates[count($weekly_send_dates) - 1];
+  $last_weekly_send_date = date('m/d/Y', $last_weekly_send_date_in_ms);
+  $last_sunday = date('m/d/Y', strtotime('last Sunday', time()));
+  return $last_weekly_send_date === $last_sunday;
+}
+
+function send_urgent_email() {
+
+  $send_dates = variable_get('weekly_email_send_dates');
+  $last_send_date = $send_dates[count($send_dates) - 1];
+
+  $last_urgent_check = variable_get('last_urgent_check');
+
+  $next_send_date = get_next_send_date();
+
+  $climate_events_created_since_last_send_date_that_occur_before_next_send_date =
+    db_query("SELECT nid
+              FROM node, field_data_field_event_date_time
+              WHERE node.nid = field_data_field_event_date_time.entity_id
+              and node.created > :last_send_date
+              and node.created > :last_urgent_check
+              and node.type = 'climate_change_event'
+              and field_data_field_event_date_time.field_event_date_time_value < :next_send_date",
+              array(':last_send_date' => $last_send_date,
+              ':next_send_date' => $next_send_date,
+                ':last_urgent_check' => $last_urgent_check));
+
+
+  variable_set('last_urgent_check', time());
+
+  $climate_event_nids = $climate_events_created_since_last_send_date_that_occur_before_next_send_date->fetchCol();
+  if(empty($climate_event_nids)) {
+    return;
+  }
+
+
+
+  $urgent_email_subscribers = db_query("SELECT pid
+                    FROM
+                    profile {profile},
+                    field_data_field_urgent_emails {field_data_field_urgent_emails},
+                    users {users}
+                    WHERE
+                    profile.uid = users.uid and
+                    profile.pid = field_data_field_urgent_emails.entity_id and
+                    type = :type and
+                    field_urgent_emails_value = :urgent_emails_value AND
+                    users.status = :active",
+    array(':type' => 'subscription', ':urgent_emails_value' => 1, ':active'=> 1));
+
+  $urgent_email_subscribers_pids = $urgent_email_subscribers->fetchCol();
+  $urgent_email_subscription_drupal_objs = profile2_load_multiple($urgent_email_subscribers_pids);
+
+  $climate_event_drupal_objs = node_load_multiple($climate_event_nids);
+
+  include_once('includes/classes/Subscription.php');
+  include_once(DRUPAL_ROOT . '/sites/all/modules/custom/climate_events/includes/classes/ClimateEvent.php');
+  foreach($urgent_email_subscription_drupal_objs as $sub) {
+
+    $subscription_obj = new Subscription($sub);
+    $subscription_objects[] = $subscription_obj;
+
+    foreach($climate_event_drupal_objs as $event) {
+      $event = new ClimateEvent($event);
+      $subscription_obj->addEventIfItMatchesSubscription($event);
+    }
+  }
+
+  foreach($subscription_objects as $subscription) {
+    if($subscription->hasMatchingEvents()) {
+      sendUrgentEventEmail($subscription);
+    }
+  }
+
+  watchdog(WATCHDOG_INFO,'sent urgent climate events email');
+}
+
+
+function get_next_send_date() {
+  return date('Y-m-d H:i', strtotime('next monday'));
+}
+
+
+
+
+
+function isEmailAlreadyInUse($email) {
+  return (boolean)user_load_by_mail($email);
+}
+
+
+function formIsValid($form) {
+  $form_errors = form_get_errors($form);
+  return empty($form_errors);
+}
+
+
+function sendVerificationEmail($form_state) {
+
+  include_once('includes/classes/HtmlEmailLinks.php');
+  // $profile = profile2_load_by_user(user_load(11), null);
+
+  //This will generate a random password, you could set your own here
+  $password = user_password(8);
+
+  $email = $form_state['values']['email'];
+
+
+  //set up the user fields
+  $fields = array(
+    'name' => $email,
+    'mail' => $email,
+    'pass' => $password,
+    'status' => 0,
+    'init' => 'email address',
+    'roles' => array(
+      DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+      5 => 'events_subscriber'
+    ),
+  );
+
+
+  //the first parameter is left blank so a new user is created
+  $account = user_save('', $fields);
+
+
+  $profile = createUserProfile($account);
+  saveFormDataToUserProfile($profile, $form_state);
+
+  // Manually set the password so it appears in the e-mail. //is this true???
+  $account->password = $fields['pass'];
+
+  $verification_string = generateVerificationString();
+  $html_email_links = new HtmlEmailLinks($email, $verification_string);
+  $verification_link = $html_email_links->generateEmailVerificationLink();
+  $unsubscribe_link = $html_email_links->generateUnsubscribeLink();
+  $change_subscription_link = $html_email_links->generateChangeSubscriptionLink();
+
+  $email_data = array('verification_link' => $verification_link,
+    'unsubscribe_link' => $unsubscribe_link,
+    'change_subscription_link' => $change_subscription_link);
+  saveVerificationStringToUserProfile($profile, $verification_string);
+
+  // Send the e-mail through the user module.
+  // drupal_mail('user', 'register_no_approval_required', $email, NULL, array('account' => $account), variable_get('site_mail', 'noreply@example..com'));
+  $language = language_default();
+
+  drupal_mail('subscribe_to_climate_events', 'verify_email', $email, $language, $email_data, variable_get('site_mail', 'noreply@example.com'));
+}
+
+
+function sendWeeklyEventsEmail($subscription) {
+  include_once('includes/classes/HtmlEmailLinks.php');
+
+  $email = $subscription->getEmailAddress();
+  $verification_string = generateVerificationString();
+  $html_email_links = new HtmlEmailLinks($email, $verification_string);
+  $unsubscribe_link = $html_email_links->generateUnsubscribeLink();
+  $change_subscription_link = $html_email_links->generateChangeSubscriptionLink();
+
+  $email_data = array('events' => $subscription->getMatchingEvents(),
+    'email_send_date' => date('F n, Y'),
+    'unsubscribe_link' => $unsubscribe_link,
+    'change_subscription_link' => $change_subscription_link);
+
+  saveVerificationStringToUserProfile($subscription->getDrupalSubscriptionObject(), $verification_string);
+
+  $language = language_default();
+
+  drupal_mail('subscribe_to_climate_events', 'weekly_events_email', $email, $language, $email_data, variable_get('site_mail', 'noreply@example.com'));
+}
+
+
+function sendUrgentEventEmail($subscription) {
+  include_once('includes/classes/HtmlEmailLinks.php');
+
+  $email = $subscription->getEmailAddress();
+
+
+
+  $verification_string = generateVerificationString();
+  $html_email_links = new HtmlEmailLinks($email, $verification_string);
+  $unsubscribe_link = $html_email_links->generateUnsubscribeLink();
+  $change_subscription_link = $html_email_links->generateChangeSubscriptionLink();
+
+  $email_data = array('events' => $subscription->getMatchingEvents(),
+    'email_send_date' => date('F n, Y'),
+    'unsubscribe_link' => $unsubscribe_link,
+    'change_subscription_link' => $change_subscription_link);
+
+  saveVerificationStringToUserProfile($subscription->getDrupalSubscriptionObject(), $verification_string);
+
+  $language = language_default();
+
+  drupal_mail('subscribe_to_climate_events', 'urgent_event_email', $email, $language, $email_data, variable_get('site_mail', 'noreply@example.com'));
+}
+
+
+function sendResendSubscriptionChangeEmail($email) {
+  include_once('includes/classes/HtmlEmailLinks.php');
+
+  $account = user_load_by_mail($email);
+  $profile = profile2_load_by_user($account);
+
+  $verification_string = generateVerificationString();
+  $html_email_links = new HtmlEmailLinks($email, $verification_string);
+  $unsubscribe_link = $html_email_links->generateUnsubscribeLink();
+  $change_subscription_link = $html_email_links->generateChangeSubscriptionLink();
+
+  $email_data = array(
+    'unsubscribe_link' => $unsubscribe_link,
+    'change_subscription_link' => $change_subscription_link);
+  saveVerificationStringToUserProfile($profile, $verification_string);
+
+  $language = language_default();
+
+  drupal_mail('subscribe_to_climate_events', 'change_subscription', $email, $language, $email_data, variable_get('site_mail', 'noreply@example.com'));
+
+
+}
+//todo: alter teh profile form to remove the verification string from display to user in admin screen
+
+
+

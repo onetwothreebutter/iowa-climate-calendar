@@ -1,0 +1,10 @@
+<div class='ng-modal' ng-show='show'>
+  <div class='ng-modal-overlay' ng-click='hideModal();'></div>
+  <div class='ng-modal-dialog' ng-style='dialogStyle' ng-click='$event.stopPropagation()'>
+    <div class='ng-modal-close' ng-click='climateEventsCtrl.hideModal()'>X</div>
+    <header class="ng-modal__intro">
+      <h1 class="ng-modal__heading">Receive weekly e-mails about upcoming climate change events</h1>
+    </header>
+    <div class='ng-modal-dialog-content' ng-transclude></div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="climate-events__filter">
+  <div class="climate-events__filter-event-type">
+    <h2 class="climate-events__filter-name">Event Types</h2>
+  <span class="climate-events__filter-item" ng-repeat="eventType in climateEventsCtrl.climateEventTypes">
+    <label for="event-type-{{eventType['event-type-id']}}">
+      <input type="checkbox" id="event-type-{{eventType['event-type-id']}}"
+             ng-model="climateEventsCtrl.selectedEvents.ids[eventType['event-type-id']]"
+             ng-click="climateEventsCtrl.dumpSelectedEvents()"
+             value="{{ eventType['event-type-id'] }}"/>
+      {{ eventType['event-type'] }}
+    </label>
+  </span>
+  </div>
+  <div class="climate-events__filter-distance">
+    <h2 class="climate-events__filter-name">Filter by Distance</h2>
+    <select ng-model="climateEventsCtrl.distance" class="distance-from-zip" ng-options="distance['distance-name'] for distance in climateEventsCtrl.climateDistances track by distance['distance-value']">
+
+    </select>
+    <span>from</span>
+    <input ng-model="climateEventsCtrl.zip" placeholder="zip code" type="text" id="zip" name="zip" size="8"/>
+    <button ng-click="climateEventsCtrl.getEventsByDistance()" >{{ climateEventsCtrl.filterLoadingMessage || 'filter' }}</button>
+  </div>
+
+
+  <a class='climate-events__subscribe-button' ng-click='climateEventsCtrl.toggleModal()'>Subscribe to Climate Events</a>
+  <p class="climate-events__subscribe-description">Receive weekly email of events in your area</p>
+  <modaldialog class="modal-overlay" show='climateEventsCtrl.modalShown' ng-click='climateEventsCtrl.toggleModal()'>
+    <div ng-bind-html="climateEventsCtrl.subscribeForm"></div>
+  </modaldialog>
+  <h2 class="climate-events__filter-name">Contact Info</h2>
+  <a class="climate-events__contact-email" href="mailto:iowaclimatecalendar@gmail.com">iowaclimatecalendar@gmail.com</a>
+  <p class="climate-events__contact-description">Send us any events you would like posted!</p>
+</div>
+
+<div class="climate-events__list">
+  <h2 class="climate-events__list-heading">Events</h2>
+
+  <div class="climate-events__day-of-event"
+       ng-repeat="(eventDay,eventObj) in climateEventsCtrl.climateEvents" >
+
+      <div class="climate-event__day-name">{{eventDay}}</div>
+      <div class="climate-events__event" ng-repeat="event in eventObj | eventTypeFilter: climateEventsCtrl.selectedEvents.ids ">
+        <span class="trigger-show-description" ng-click="showDetails = ! showDetails">
+          <span class="climate-events__event-time">
+            {{ event['event-time'] }}
+          </span>
+          <span class="climate-events__event-title">
+            <span class="climate-events__event-title-only">{{ event['event-title'] }}</span> <span class="climate-events__event-city">({{ event.city }})</span>
+            <a class="climate-event__admin-edit" ng-click="climateEventsCtrl.allowEventToHappen($event)" href="/node/{{ event['nid'] }}/edit" ng-if="climateEventsCtrl.isLoggedIn()">edit</a>
+          </span>
+        </span>
+        <span class="climate-events__event-types">
+          <a class="climate-event__event-type" ng-repeat="eventTypeId in event['event-type-ids']"
+             ng-click="climateEventsCtrl.selectEventTypeCheckbox(eventTypeId.tid)">
+            {{ eventTypeId.name }}
+          </a>
+        </span>
+        <div class="climate-events__event-details -hidden" ng-class="{ '-hidden': ! showDetails }" >
+          <div class="climate-events__event-details-padding">
+             <p class="climate-events__event-description" ng-bind-html="climateEventsCtrl.trustAsHtml(event['event-description'])"></p>
+            <p class="climate-events__event-venue">{{ event['event-venue'] }}</p>
+            <p class="climate-events__event-address" ng-bind-html="climateEventsCtrl.trustAsHtml(event['address'])"></p>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
