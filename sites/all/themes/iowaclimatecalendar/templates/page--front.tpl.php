@@ -12,7 +12,7 @@
     <?php endif; ?>
 
     <?php print views_embed_view('climate_events', 'climate_events_block'); ?>
-    <div ng-app="ClimateActionsIowa">
+    <div ng-app="IowaClimateCalendar">
       <div ng-controller="MainCtrl">
         <div ui-view="climate-events" class="climate-events">
 

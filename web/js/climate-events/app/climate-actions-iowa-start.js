@@ -1,4 +1,4 @@
-angular.module('ClimateActionsIowa', [
+angular.module('IowaClimateCalendar', [
   'ui.router',
   'climate-events'
 ])

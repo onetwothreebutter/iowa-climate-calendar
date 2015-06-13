@@ -28,7 +28,7 @@ class SmtpMailSystem implements MailSystemInterface {
     $message['body'] = implode("\n\n", $message['body']);
 
     if($message['module'] === 'subscribe_to_climate_events') {
-      $template_for_html_email = '/sites/all/themes/climateactionsiowa/templates/htmlmail' . '--' . str_replace('_', '-', $message['module']) . '--' . $message['key'] . '.tpl.php';
+      $template_for_html_email = '/sites/all/themes/iowaclimatecalendar/templates/htmlmail' . '--' . str_replace('_', '-', $message['module']) . '--' . $message['key'] . '.tpl.php';
       //$message['body'] = theme($template_for_html_email, $message);
       $message['body'] = theme_render_template($template_for_html_email, $message['params']);
       $message['headers']['Content-Type'] = str_replace('text/plain', 'text/html', $message['headers']['Content-Type']);

@@ -1,0 +1,24 @@
+; iowa_climate_calendar make file for local development
+core = "7.x"
+api = "2"
+
+projects[drupal][version] = "7.x"
+; include the d.o. profile base
+includes[] = "drupal-org.make"
+
+; +++++ Libraries +++++
+
+; chosen
+libraries[chosen][directory_name] = "chosen"
+libraries[chosen][type] = "library"
+libraries[chosen][destination] = "libraries"
+libraries[chosen][download][type] = "get"
+libraries[chosen][download][url] = "" ; TODO add download URI
+
+; iowa_climate_calendar
+libraries[iowa_climate_calendar][directory_name] = "iowa_climate_calendar"
+libraries[iowa_climate_calendar][type] = "profile"
+libraries[iowa_climate_calendar][destination] = "../../profiles"
+libraries[iowa_climate_calendar][download][type] = "get"
+libraries[iowa_climate_calendar][download][url] = "http://ftp.drupal.org/files/projects/iowa_climate_calendar-7.x-1.x-dev.tar.gz"
+

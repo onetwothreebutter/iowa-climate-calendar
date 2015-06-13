@@ -2,7 +2,6 @@ name = 'Iowa Climate Calendar'
 description = 'Theme for Iowa Climate Calendar'
 core = 7.x
 
-
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Regions
 ;;;;;;;;;;;;;;;;;;;;;
@@ -26,27 +25,4 @@ regions[page_bottom]    = 'Page bottom'
 stylesheets[all][] = web/css/screen.css
 stylesheets[all][] = web/css/screen2.css
 
-;;;;;;;;;;;;;;;;;;;;;
-;; Module Dependencies
-;;;;;;;;;;;;;;;;;;;;;
-dependencies[] = module_filter
-dependencies[] = climate_events
-dependencies[] = subscribe_to_climate_events
-dependencies[] = profile2
-dependencies[] = rest_server
-dependencies[] = views
-dependencies[] = views_ui
-dependencies[] = smtp
-dependencies[] = services_views
-dependencies[] = views_json
-dependencies[] = date_views
-dependencies[] = date_popup
-dependencies[] = mailsystem
-dependencies[] = htmlmail
-dependencies[] = logintoboggan
-dependencies[] = super_login
-dependencies[] = addressfield
-dependencies[] = email_registration
-dependencies[] = features
-dependencies[] = content_types_views_etc_for_iowa_climate_calendar
 
