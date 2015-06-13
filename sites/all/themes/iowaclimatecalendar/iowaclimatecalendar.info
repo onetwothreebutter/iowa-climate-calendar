@@ -47,4 +47,6 @@ dependencies[] = logintoboggan
 dependencies[] = super_login
 dependencies[] = addressfield
 dependencies[] = email_registration
+dependencies[] = features
+dependencies[] = content_types_views_etc_for_iowa_climate_calendar
 

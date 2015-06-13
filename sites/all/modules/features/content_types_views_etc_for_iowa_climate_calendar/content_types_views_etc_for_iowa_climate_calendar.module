@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Content Types, Views, etc for Iowa Climate Calendar feature.
+ */
+
+include_once 'content_types_views_etc_for_iowa_climate_calendar.features.inc';
