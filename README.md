@@ -9,14 +9,7 @@ state of Iowa, but can easily be customized for other states.
 This site was written quickly with no tests and little refactoring. Sorry!
 
 ##Installation
-Set up the site with your webserver and install Drupal.  
-Change the Theme to Iowa Climate Calendar
-* Date Views
-* Date Popup
-* HTML Emails
-* LoginToboggan
-
-
+Set up the site with your webserver and install Drupal. It should default to the Iowa Climate Calendar profile.
 
 
 ##License
