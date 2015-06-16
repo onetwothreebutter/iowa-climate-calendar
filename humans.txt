@@ -1,0 +1,14 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Eric Johnson -- Web Developer, Web Designer -- @ericdjohnson
+
+# THANKS
+
+    Bill McKibben for getting me into this mess
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5, Drupal(7), Angular(1.4)
