@@ -83,4 +83,5 @@ dependencies[] = views_json
 dependencies[] = views_ui
 ; Features
 dependencies[] = features
+dependencies[] = content_types_views_etc_for_iowa_climate_calendar
 

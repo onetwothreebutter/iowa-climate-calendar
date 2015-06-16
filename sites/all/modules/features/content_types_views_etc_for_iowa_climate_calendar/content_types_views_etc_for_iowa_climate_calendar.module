@@ -5,3 +5,70 @@
  */
 
 include_once 'content_types_views_etc_for_iowa_climate_calendar.features.inc';
+
+function content_types_views_etc_for_iowa_climate_calendar_modules_installed($modules) {
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('zip_code_distances');
+
+  if ($vocabulary) {
+
+    $vocabulary_terms = taxonomy_get_tree($vocabulary->vid);
+
+    if (empty($vocabulary_terms)) {
+      $terms = array();
+
+      $terms[] = t('10 miles');
+      $terms[] = t('30 miles');
+      $terms[] = t('50 miles');
+      $terms[] = t('75 miles');
+      $terms[] = t('100 miles');
+      $terms[] = t('150 miles');
+      $terms[] = t('200 miles');
+      $terms[] = t('300 miles');
+      $terms[] = t('State wide');
+
+      foreach ($terms as $name) {
+        $term = new stdClass();
+        $term->vid = $vocabulary->vid;
+        $term->name = $name;
+        taxonomy_term_save($term);
+      }
+    }
+
+
+  }
+
+  $vocabulary = taxonomy_vocabulary_machine_name_load('event_type');
+
+  if ($vocabulary) {
+    $vocabulary_terms = taxonomy_get_tree($vocabulary->vid);
+
+    if (empty($vocabulary_terms)) {
+      $terms = array();
+
+      $terms[] = t('Conference/Forum');
+      $terms[] = t('Critical Action');
+      $terms[] = t('Education');
+      $terms[] = t('Media Event');
+      $terms[] = t('Meeting of climate change group');
+      $terms[] = t('News');
+      $terms[] = t('Political Lobbying Effort');
+      $terms[] = t('Presidential Candidate');
+      $terms[] = t('Protest');
+      $terms[] = t('Public Comment');
+      $terms[] = t('Public Speaker');
+      $terms[] = t('Training');
+
+
+      foreach ($terms as $name) {
+        $term = new stdClass();
+        $term->vid = $vocabulary->vid;
+        $term->name = $name;
+        taxonomy_term_save($term);
+      }
+    }
+
+  }
+}
+
+
