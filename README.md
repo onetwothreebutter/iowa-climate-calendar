@@ -23,5 +23,5 @@ Contact me if you get stuck!
 This site was written quickly with no tests and little refactoring. Sorry!
 
 ##License
-Sed the LICENSE file
+See the LICENSE file
 

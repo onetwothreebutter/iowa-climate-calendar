@@ -254,7 +254,8 @@ function already_sent_this_weeks_email() {
   $last_weekly_send_date_in_ms = $weekly_send_dates[count($weekly_send_dates) - 1];
   $last_weekly_send_date = date('m/d/Y', $last_weekly_send_date_in_ms);
   $last_sunday = date('m/d/Y', strtotime('last Sunday', time()));
-  return $last_weekly_send_date === $last_sunday;
+  $today = date('m/d/Y', time());
+  return $last_weekly_send_date === $last_sunday || $last_weekly_send_date === $today;
 }
 
 function send_urgent_email() {
